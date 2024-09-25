@@ -2,11 +2,11 @@ const Item = require('../models/items');
 
 // Create a new item
 exports.createItem = async (req, res) => {
-    const { name, description } = req.body;
+    const { name, description, price, quantity, category } = req.body;
     const userId = req.user.id; // Decoded from JWT
 
     try {
-        const item = await Item.create({ name, description, userId });
+        const item = await Item.create({ name, description, price, quantity, category, userId });
         res.status(201).json(item);
     } catch (error) {
         console.error(error);
@@ -45,7 +45,7 @@ exports.getItemById = async (req, res) => {
 // Update an item
 exports.updateItem = async (req, res) => {
     const { id } = req.params;
-    const { name, description } = req.body;
+    const { name, description, price, quantity, category } = req.body;
     const userId = req.user.id; // Decoded from JWT
 
     try {
@@ -54,6 +54,9 @@ exports.updateItem = async (req, res) => {
 
         item.name = name;
         item.description = description;
+        item.price = price;
+        item.quantity = quantity;
+        item.category = category;
         await item.save();
 
         res.status(200).json(item);
